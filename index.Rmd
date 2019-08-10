@@ -1,0 +1,193 @@
+---
+title: "A tutorial on approximating probabilities"
+description: |
+  Using simulation as a substitute for analytical solutions
+author:
+  - name: Mikhail Popov
+    url: https://mpopov.com
+date: "`r Sys.Date()`"
+bibliography: bibliography.bib
+repository_url: https://github.com/bearloga/approximating-probability
+creative_commons: CC BY-SA
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
+    df_print: kable
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(kableExtra)
+opts_chunk$set(echo = TRUE, digits = 3, message = FALSE, warning = FALSE)
+```
+```{css, echo=FALSE}
+a.wiki-preview {
+    color: #0645ad;
+    text-decoration: none;
+    border-bottom: 1px dotted #0645ad;
+}
+.wiki-preview::after {
+    font-family: serif;
+    content: " W";
+    vertical-align: super;
+    font-size: 6pt;
+}
+```
+
+<!-- https://chimeces.com/context-cards/ -->
+<script src="context-cards.js"></script>
+
+# Introduction
+
+Suppose we want to know the probability of some event. There are two ways we can find that: use algebra, calculus, probability theory, etc. to find the answer mathematically, _**or**_ we can write a program to find the answer through simulation.
+
+For example, in the famous <a href="https://en.wikipedia.org/wiki/Birthday_problem" class='wiki-preview' data-wiki-lang='en' data-wiki-title='Birthday problem'>birthday problem</a> (taught in all intro to probability theory courses) we are interested in the probability that, in a set of $n$ randomly chosen people, some pair of them will have the same birthday (which we refer to as event $A$).
+
+## Analytical solution
+
+Using <a href="https://en.wikipedia.org/wiki/Probability_axioms" class='wiki-preview' data-wiki-lang='en' data-wiki-title='Probability axioms'>Kolmogorov axioms</a> and <a href="https://en.wikipedia.org/wiki/Conditional_probability" class='wiki-preview' data-wiki-lang='en' data-wiki-title='Conditional probability'>conditional probability</a> we can derive an <a href="https://en.wikipedia.org/wiki/Closed-form_expression" class='wiki-preview' data-wiki-lang='en' data-wiki-title='Closed-form expression'>analytical solution</a> for $P(A)$:
+
+$$P(A) = 1 - \frac{n! \cdot {\binom {365}{n}}}{365^{n}}$$
+
+Deriving an exact solution analytically is an interesting challenge _**but we have computers now**_ and can find an approximate answer to this scenario and more. Using random number generation we can simulate an outcome and then count how many times a particular outcome occurred out of all the simulations.
+
+<aside>
+By the way, this probability puzzle is a terrible question to ask candidates interviewing for a Data Scientist position. Please stop doing that.
+</aside>
+
+For evaluating the accuracy of our simulation-based results, we will be using the following R[-@R-base] code for calculating $P(A)$:
+
+```{r pa}
+pa <- function(n) {
+  1 - (factorial(n) * choose(365, n)) / (365^n)
+}
+```
+
+For example, out of 23 people with uniformly distributed birthdays, the probability that two people will share a birthday is `r scales::percent(pa(23))`.
+
+## Simulation-based solution
+
+To facilitate some of the work, I rely on the {purrr}[-@R-purrr] R package, so let's attach that:
+
+```{r packages}
+library(purrr)
+```
+
+We start with a basic function that randomly generates $n$ birthdays, assuming a year with 365 days and that each day is equally likely:
+
+```{r birthdays}
+birthdays <- function(n) {
+  sample(1:365, n, replace = TRUE)
+}
+```
+
+Then we have a function which simulates a single outcome: either 2 or more people share a birthday (there are duplicate values) or they were all born on different days:
+
+```{r simulate_a}
+simulate_a <- function(n) {
+  bdays <- birthdays(n)
+  any(duplicated(bdays))
+}
+```
+
+Approximating $P(A)$ involves simulating a bunch of outcomes and calculating the proportion of those outcomes where the event $A$ was observed:
+
+```{r pa2}
+pa2 <- function(n, simulations = 100000) {
+  # output a TRUE/FALSE in each simulation:
+  simulation_outcomes <- map_lgl(1:simulations, ~ simulate_a(n))
+  
+  # proportion of simulations that are TRUE:
+  sum(simulation_outcomes) / simulations
+}
+```
+
+Now we can compare `pa(n)` and `pa2(n)` at different values of $n$:
+
+```{r approx_pa, cache=TRUE}
+set.seed(23)
+
+approx_pa <- map_dfr(
+  c(0, 5, 10, 20, 23, 30, 40),
+  function(n) {
+    data.frame(analytical = pa(n), simulated = pa2(n))
+  }
+)
+```
+
+```{r, echo=FALSE}
+approx_pa %>%
+  kable(digits = 3, format = "markdown")
+```
+
+Simulation gives us probabilities pretty close to the ones we get using the analytically-derived formula!
+
+# Extension
+
+Suppose we were instead interested in a different question:
+
+> What is the probability of event $B$, that in a group of $n$ people, there will be a sequence of $m$ consecutive days in which there is at least one birthday each day?
+
+Good luck trying to derive a generalized solution analytically! Luckily, _**we have computers**_! Let's start by defining a function that simulates a single outcome:
+
+```{r simulate_b}
+simulate_b <- function(n, m) {
+  bdays <- birthdays(n) # re-using from before
+  
+  # two birthdays on same day doesn't matter anymore:
+  bdays <- unique(bdays)
+  
+  # calculate how many days between each birthday:
+  diffs <- c(0, diff(sort(bdays))) # 33, 35, 36 => 0, 2, 1
+  
+  for (i in m:length(diffs)) {
+    # event B is m differences of 1 days between birthdays:
+    if (sum(diffs[(i - m + 1):i] == 1) == m) {
+      return(TRUE) # stop checking at 1st observance of B
+    }
+  }
+  
+  return(FALSE) # event B was not observed
+}
+```
+
+We proceed as before: we run `simulate_b` a bunch of times and calculate the proportion of those times where $B$ occurred:
+
+```{r pb}
+pb <- function(n, m, simulations = 100000) {
+  simulation_outcomes <- map_lgl(1:simulations, ~ simulate_b(n, m))
+  mean(simulation_outcomes)
+}
+```
+
+So, what is the probability that in a group of, say, 77 people (with uniformly random birthdays across 365 days) we will find 6 consecutive days in which there is at least one birthday each day?
+
+```{r approx_pb, cache=TRUE}
+set.seed(42)
+
+(approx_pb <- pb(77, 6))
+```
+
+For that particular scenario and event, the probability is approximately `r scales::percent(approx_pb)`. The way we've coded it means we can quickly approximate the probability for any number of people $n$ and any number of days $m$.
+
+# Exercises
+
+If you're interested in practicing this skill, I encourage you to practice with the following:
+
+1. Verify to yourself, through simulation, that in the <a href="https://en.wikipedia.org/wiki/Monty_Hall_problem" class='wiki-preview' data-wiki-lang='en' data-wiki-title='Monty Hall problem'>Monty Hall problem</a>, contestants who switch doors have a $\frac{2}{3}$ chance of winning but contestants who stick to their initial choice have a $\frac{1}{3}$ chance of winning.
+2. At a meeting of a dozen (12) sets of twins (assuming each pair was born on the same day), what is the probability that two sets of twins (4 people total) share a birthday?
+3. Two baseball teams (each composed of 9 players) arrive at a field to play each other. What is probability that nobody on either team shares a birthday with one of their teammates and that exactly one player from team 1 shares a birthday with exactly one player from team 2?
+
+This should go without saying but feel free to use whatever language you're most comfortable with (Python, Julia, etc.). Also maybe find a friend to try these exercises with you and then compare answers and approaches. (Perhaps you'll learn something new from each other!)
+
+# Acknowledgements {.appendix}
+
+You might have noticed a few blue links with "W"s on this page. Those are links to the Wikipedia articles on those topics and if you hover over them, you will see a preview of the article. This is possible with the [ContextCards library](https://chimeces.com/context-cards/) developed by my coworker Joaquin over at Wikimedia, based on the [Popups extension for MediaWiki](https://www.mediawiki.org/wiki/Extension:Popups).
+
+```{r bibliography, echo=FALSE, eval=FALSE}
+write_bib(
+  c("base", "purrr"),
+  "bibliography.bib"
+)
+```
