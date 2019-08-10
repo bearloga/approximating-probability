@@ -18,7 +18,6 @@ output:
 
 ```{r setup, include=FALSE}
 library(knitr)
-library(kableExtra)
 opts_chunk$set(echo = TRUE, digits = 3, message = FALSE, warning = FALSE)
 ```
 ```{css, echo=FALSE}
@@ -94,12 +93,24 @@ simulate_a <- function(n) {
 Approximating $P(A)$ involves simulating a bunch of outcomes and calculating the proportion of those outcomes where the event $A$ was observed:
 
 ```{r pa2}
-pa2 <- function(n, simulations = 100000) {
+pa2 <- function(n, simulations) {
   # output a TRUE/FALSE in each simulation:
   simulation_outcomes <- map_lgl(1:simulations, ~ simulate_a(n))
   
   # proportion of simulations that are TRUE:
   sum(simulation_outcomes) / simulations
+}
+```
+
+Lastly, we should do a few repetitions to get more approximations because we shouldn't trust just one.
+
+<aside>
+Thanks to <a href="https://twitter.com/StatStas">Stas Kolenikov</a> for suggesting this part.
+</aside>
+
+```{r repeat_pa2}
+repeat_pa2 <- function(n, simulations, repeats) {
+  map_dbl(1:repeats, ~ pa2(n, simulations))
 }
 ```
 
@@ -109,16 +120,20 @@ Now we can compare `pa(n)` and `pa2(n)` at different values of $n$:
 set.seed(23)
 
 approx_pa <- map_dfr(
-  c(0, 5, 10, 20, 23, 30, 40),
+  c(5, 10, 20, 23, 30, 40, 50),
   function(n) {
-    data.frame(analytical = pa(n), simulated = pa2(n))
+    pas <- repeat_pa2(n, simulations = 10000, repeats = 10)
+    data.frame(
+      n = n,
+      analytical = pa(n),
+      simulated = sprintf("%.3f (%.3f-%.3f)", mean(pas), min(pas), max(pas)))
   }
 )
 ```
 
 ```{r, echo=FALSE}
 approx_pa %>%
-  kable(digits = 3, format = "markdown")
+  kable(digits = 3, format = "markdown", align = c("r", "r", "r"))
 ```
 
 Simulation gives us probabilities pretty close to the ones we get using the analytically-derived formula!
@@ -155,9 +170,17 @@ simulate_b <- function(n, m) {
 We proceed as before: we run `simulate_b` a bunch of times and calculate the proportion of those times where $B$ occurred:
 
 ```{r pb}
-pb <- function(n, m, simulations = 100000) {
+pb <- function(n, m, simulations) {
   simulation_outcomes <- map_lgl(1:simulations, ~ simulate_b(n, m))
   mean(simulation_outcomes)
+}
+```
+
+And repeat it a few times to capture the uncertainty:
+
+```{r repeat_pb}
+repeat_pa2 <- function(n, m, simulations, repeats) {
+  map_dbl(1:repeats, ~ pb(n, m, simulations))
 }
 ```
 
@@ -166,10 +189,10 @@ So, what is the probability that in a group of, say, 77 people (with uniformly r
 ```{r approx_pb, cache=TRUE}
 set.seed(42)
 
-(approx_pb <- pb(77, 6))
+summary(approx_pb <- repeat_pa2(77, 6, 10000, 10))
 ```
 
-For that particular scenario and event, the probability is approximately `r scales::percent(approx_pb)`. The way we've coded it means we can quickly approximate the probability for any number of people $n$ and any number of days $m$.
+For that particular scenario and event, the probability is approximately `r scales::percent(mean(approx_pb))`. The way we've coded it means we can quickly approximate the probability for any number of people $n$ and any number of days $m$.
 
 # Exercises
 

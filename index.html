@@ -25,8 +25,8 @@
   
   
   <!--  https://schema.org/Article -->
-  <meta property="article:published" itemprop="datePublished" content="2019-08-09" />
-  <meta property="article:created" itemprop="dateCreated" content="2019-08-09" />
+  <meta property="article:published" itemprop="datePublished" content="2019-08-10" />
+  <meta property="article:created" itemprop="dateCreated" content="2019-08-10" />
   <meta name="article:author" content="Mikhail Popov" />
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
@@ -47,7 +47,7 @@
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","bibliography","repository_url","creative_commons","output"]}},"value":[{"type":"character","attributes":{},"value":["A tutorial on approximating probabilities"]},{"type":"character","attributes":{},"value":["Using simulation as a substitute for analytical solutions\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Mikhail Popov"]},{"type":"character","attributes":{},"value":["https://mpopov.com"]}]}]},{"type":"character","attributes":{},"value":["2019-08-09"]},{"type":"character","attributes":{},"value":["bibliography.bib"]},{"type":"character","attributes":{},"value":["https://github.com/bearloga/approximating-probability"]},{"type":"character","attributes":{},"value":["CC BY-SA"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","df_print"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[2]},{"type":"character","attributes":{},"value":["kable"]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","bibliography","repository_url","creative_commons","output"]}},"value":[{"type":"character","attributes":{},"value":["A tutorial on approximating probabilities"]},{"type":"character","attributes":{},"value":["Using simulation as a substitute for analytical solutions\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Mikhail Popov"]},{"type":"character","attributes":{},"value":["https://mpopov.com"]}]}]},{"type":"character","attributes":{},"value":["2019-08-10"]},{"type":"character","attributes":{},"value":["bibliography.bib"]},{"type":"character","attributes":{},"value":["https://github.com/bearloga/approximating-probability"]},{"type":"character","attributes":{},"value":["CC BY-SA"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","df_print"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[2]},{"type":"character","attributes":{},"value":["kable"]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1935,7 +1935,7 @@ distill-header .nav a {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"A tutorial on approximating probabilities","description":"Using simulation as a substitute for analytical solutions","authors":[{"author":"Mikhail Popov","authorURL":"https://mpopov.com","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2019-08-09T00:00:00.000-04:00","citationText":"Popov, 2019"}
+{"title":"A tutorial on approximating probabilities","description":"Using simulation as a substitute for analytical solutions","authors":[{"author":"Mikhail Popov","authorURL":"https://mpopov.com","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2019-08-10T00:00:00.000-04:00","citationText":"Popov, 2019"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1946,13 +1946,13 @@ distill-header .nav a {
 
 <div class="d-title">
 <h1>A tutorial on approximating probabilities</h1>
-<p><p>Using simulation as a substitute for analytical solutions</p></p>
+<p>Using simulation as a substitute for analytical solutions</p>
 </div>
 
 <div class="d-byline">
   Mikhail Popov <a href="https://mpopov.com" class="uri">https://mpopov.com</a> 
   
-<br />2019-08-09
+<br />2019-08-10
 </div>
 
 <div class="d-article">
@@ -1997,7 +1997,7 @@ a.wiki-preview {
 <aside>
 By the way, this probability puzzle is a terrible question to ask candidates interviewing for a Data Scientist position. Please stop doing that.
 </aside>
-<p>For evaluating the accuracy of our simulation-based results, we will be using the following R<span class="citation" data-cites="R-base">(<a href="#ref-R-base" role="doc-biblioref">2019</a>)</span> code for calculating <span class="math inline">\(P(A)\)</span>:</p>
+<p>For evaluating the accuracy of our simulation-based results, we will be using the following R<span class="citation" data-cites="R-base">(<a href="#ref-R-base">2019</a>)</span> code for calculating <span class="math inline">\(P(A)\)</span>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 pa &lt;- function(n) {
@@ -2006,7 +2006,7 @@ pa &lt;- function(n) {
 </div>
 <p>For example, out of 23 people with uniformly distributed birthdays, the probability that two people will share a birthday is 50.7%.</p>
 <h2 id="simulation-based-solution">Simulation-based solution</h2>
-<p>To facilitate some of the work, I rely on the {purrr}<span class="citation" data-cites="R-purrr">(<a href="#ref-R-purrr" role="doc-biblioref">2019</a>)</span> R package, so let’s attach that:</p>
+<p>To facilitate some of the work, I rely on the {purrr}<span class="citation" data-cites="R-purrr">(<a href="#ref-R-purrr">2019</a>)</span> R package, so let’s attach that:</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 library(purrr)</code></pre>
@@ -2029,12 +2029,22 @@ simulate_a &lt;- function(n) {
 <p>Approximating <span class="math inline">\(P(A)\)</span> involves simulating a bunch of outcomes and calculating the proportion of those outcomes where the event <span class="math inline">\(A\)</span> was observed:</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
-pa2 &lt;- function(n, simulations = 100000) {
+pa2 &lt;- function(n, simulations) {
   # output a TRUE/FALSE in each simulation:
   simulation_outcomes &lt;- map_lgl(1:simulations, ~ simulate_a(n))
   
   # proportion of simulations that are TRUE:
   sum(simulation_outcomes) / simulations
+}</code></pre>
+</div>
+<p>Lastly, we should do a few repetitions to get more approximations because we shouldn’t trust just one.</p>
+<aside>
+Thanks to <a href="https://twitter.com/StatStas">Stas Kolenikov</a> for suggesting this part.
+</aside>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+repeat_pa2 &lt;- function(n, simulations, repeats) {
+  map_dbl(1:repeats, ~ pa2(n, simulations))
 }</code></pre>
 </div>
 <p>Now we can compare <code>pa(n)</code> and <code>pa2(n)</code> at different values of <span class="math inline">\(n\)</span>:</p>
@@ -2043,9 +2053,13 @@ pa2 &lt;- function(n, simulations = 100000) {
 set.seed(23)
 
 approx_pa &lt;- map_dfr(
-  c(0, 5, 10, 20, 23, 30, 40),
+  c(5, 10, 20, 23, 30, 40, 50),
   function(n) {
-    data.frame(analytical = pa(n), simulated = pa2(n))
+    pas &lt;- repeat_pa2(n, simulations = 10000, repeats = 10)
+    data.frame(
+      n = n,
+      analytical = pa(n),
+      simulated = sprintf(&quot;%.3f (%.3f-%.3f)&quot;, mean(pas), min(pas), max(pas)))
   }
 )</code></pre>
 </div>
@@ -2053,38 +2067,46 @@ approx_pa &lt;- map_dfr(
 <table>
 <thead>
 <tr class="header">
+<th style="text-align: right;">n</th>
 <th style="text-align: right;">analytical</th>
 <th style="text-align: right;">simulated</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.027</td>
+<td style="text-align: right;">0.027 (0.025-0.031)</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.027</td>
-<td style="text-align: right;">0.027</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.117</td>
+<td style="text-align: right;">0.117 (0.110-0.124)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">0.117</td>
-<td style="text-align: right;">0.117</td>
-</tr>
-<tr class="even">
+<td style="text-align: right;">20</td>
 <td style="text-align: right;">0.411</td>
-<td style="text-align: right;">0.413</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">0.507</td>
-<td style="text-align: right;">0.508</td>
+<td style="text-align: right;">0.413 (0.407-0.421)</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">0.706</td>
-<td style="text-align: right;">0.706</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">0.507</td>
+<td style="text-align: right;">0.508 (0.496-0.514)</td>
 </tr>
 <tr class="odd">
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">0.706</td>
+<td style="text-align: right;">0.706 (0.702-0.715)</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">40</td>
 <td style="text-align: right;">0.891</td>
-<td style="text-align: right;">0.892</td>
+<td style="text-align: right;">0.892 (0.889-0.894)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0.970</td>
+<td style="text-align: right;">0.970 (0.968-0.974)</td>
 </tr>
 </tbody>
 </table>
@@ -2120,9 +2142,16 @@ simulate_b &lt;- function(n, m) {
 <p>We proceed as before: we run <code>simulate_b</code> a bunch of times and calculate the proportion of those times where <span class="math inline">\(B\)</span> occurred:</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
-pb &lt;- function(n, m, simulations = 100000) {
+pb &lt;- function(n, m, simulations) {
   simulation_outcomes &lt;- map_lgl(1:simulations, ~ simulate_b(n, m))
   mean(simulation_outcomes)
+}</code></pre>
+</div>
+<p>And repeat it a few times to capture the uncertainty:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+repeat_pa2 &lt;- function(n, m, simulations, repeats) {
+  map_dbl(1:repeats, ~ pb(n, m, simulations))
 }</code></pre>
 </div>
 <p>So, what is the probability that in a group of, say, 77 people (with uniformly random birthdays across 365 days) we will find 6 consecutive days in which there is at least one birthday each day?</p>
@@ -2130,9 +2159,10 @@ pb &lt;- function(n, m, simulations = 100000) {
 <pre class="r"><code>
 set.seed(42)
 
-(approx_pb &lt;- pb(77, 6))</code></pre>
+summary(approx_pb &lt;- repeat_pa2(77, 6, 10000, 10))</code></pre>
 <pre><code>
-[1] 0.00227</code></pre>
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+0.001700 0.001975 0.002300 0.002270 0.002625 0.002800 </code></pre>
 </div>
 <p>For that particular scenario and event, the probability is approximately 0.227%. The way we’ve coded it means we can quickly approximate the probability for any number of people <span class="math inline">\(n\)</span> and any number of days <span class="math inline">\(m\)</span>.</p>
 <h1 id="exercises">Exercises</h1>
@@ -2154,7 +2184,7 @@ set.seed(42)
 <div class="layout-chunk" data-layout="l-body">
 
 </div>
-<div id="refs" class="references" role="doc-bibliography">
+<div id="refs" class="references">
 <div id="ref-R-purrr">
 <p>Henry, Lionel, and Hadley Wickham. 2019. <em>Purrr: Functional Programming Tools</em>. <a href="https://CRAN.R-project.org/package=purrr">https://CRAN.R-project.org/package=purrr</a>.</p>
 </div>
