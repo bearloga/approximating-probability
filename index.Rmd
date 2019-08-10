@@ -122,7 +122,7 @@ set.seed(23)
 approx_pa <- map_dfr(
   c(5, 10, 20, 23, 30, 40, 50),
   function(n) {
-    pas <- repeat_pa2(n, simulations = 10000, repeats = 10)
+    pas <- repeat_pa2(n, simulations = 1e5, repeats = 10)
     data.frame(
       n = n,
       analytical = pa(n),
@@ -189,7 +189,7 @@ So, what is the probability that in a group of, say, 77 people (with uniformly r
 ```{r approx_pb, cache=TRUE}
 set.seed(42)
 
-summary(approx_pb <- repeat_pa2(77, 6, 10000, 10))
+summary(approx_pb <- repeat_pa2(77, 6, 1e5, 10))
 ```
 
 For that particular scenario and event, the probability is approximately `r scales::percent(mean(approx_pb))`. The way we've coded it means we can quickly approximate the probability for any number of people $n$ and any number of days $m$.
@@ -199,8 +199,14 @@ For that particular scenario and event, the probability is approximately `r scal
 If you're interested in practicing this skill, I encourage you to practice with the following:
 
 1. Verify to yourself, through simulation, that in the <a href="https://en.wikipedia.org/wiki/Monty_Hall_problem" class='wiki-preview' data-wiki-lang='en' data-wiki-title='Monty Hall problem'>Monty Hall problem</a>, contestants who switch doors have a $\frac{2}{3}$ chance of winning but contestants who stick to their initial choice have a $\frac{1}{3}$ chance of winning.
-2. At a meeting of a dozen (12) sets of twins (assuming each pair was born on the same day), what is the probability that two sets of twins (4 people total) share a birthday?
-3. Two baseball teams (each composed of 9 players) arrive at a field to play each other. What is probability that nobody on either team shares a birthday with one of their teammates and that exactly one player from team 1 shares a birthday with exactly one player from team 2?
+3. Suppose two people are playing non-stop <a href="https://en.wikipedia.org/wiki/Rock%E2%80%93paper%E2%80%93scissors" class='wiki-preview' data-wiki-lang='en' data-wiki-title='Rock–paper–scissors'>rock–paper–scissors</a> (also called roshambo). Player 1 (**P1**) always chooses one of the three shapes at random, but Player 2 (**P2**) always chooses between the two shapes they didn't pick the previous round. Is one tactic better than the other -- that is, which one has a higher probability of winning than the other one? (Or are they both about the same?)
+4. Suppose **P1** adjusts their strategy and always picks the shape that **P2** picked the previous round, while **P2** sticks to their original strategy. So, for example, if **P2** chose "paper" (a flat hand) in round 1, then **P1** will definitely pick "paper" in round 2, while **P2** will randomly pick between "scissors" and "rock". Is this a better or worse strategy for **P1** than always randomly picking between the three shapes? How does the win probability of **P1**'s new strategy compare to the win probablity of **P2**'s strategy?
+
+## More birthday problem exercises
+
+1. Try different numbers of simulations (e.g. 1K, 10K, 100K, 1M, 10M, 100M) with the first example. How does the number of simulations affect the variability of approximations you get -- that is, how wide the range is? How many simulations do you need to consistently see the first three significant digits of the approximated results be the same as the first three significant digits of the result from the closed-form solution?
+1. At a meeting of a dozen (12) sets of twins (assuming each pair was born on the same day), what is the probability that two sets of twins (4 people total) share a birthday?
+2. Two baseball teams (each composed of 9 players) arrive at a field to play each other. What is probability that nobody on either team shares a birthday with one of their teammates and that exactly one player from team 1 shares a birthday with exactly one player from team 2?
 
 This should go without saying but feel free to use whatever language you're most comfortable with (Python, Julia, etc.). Also maybe find a friend to try these exercises with you and then compare answers and approaches. (Perhaps you'll learn something new from each other!)
 

@@ -1964,7 +1964,9 @@ distill-header .nav a {
 <li><a href="#simulation-based-solution">Simulation-based solution</a></li>
 </ul></li>
 <li><a href="#extension">Extension</a></li>
-<li><a href="#exercises">Exercises</a></li>
+<li><a href="#exercises">Exercises</a><ul>
+<li><a href="#more-birthday-problem-exercises">More birthday problem exercises</a></li>
+</ul></li>
 <li><a href="#p.s.">P.S.</a></li>
 <li><a href="#acknowledgements">Acknowledgements</a></li>
 </ul>
@@ -2055,7 +2057,7 @@ set.seed(23)
 approx_pa &lt;- map_dfr(
   c(5, 10, 20, 23, 30, 40, 50),
   function(n) {
-    pas &lt;- repeat_pa2(n, simulations = 10000, repeats = 10)
+    pas &lt;- repeat_pa2(n, simulations = 1e5, repeats = 10)
     data.frame(
       n = n,
       analytical = pa(n),
@@ -2076,37 +2078,37 @@ approx_pa &lt;- map_dfr(
 <tr class="odd">
 <td style="text-align: right;">5</td>
 <td style="text-align: right;">0.027</td>
-<td style="text-align: right;">0.027 (0.025-0.031)</td>
+<td style="text-align: right;">0.027 (0.026-0.028)</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">10</td>
 <td style="text-align: right;">0.117</td>
-<td style="text-align: right;">0.117 (0.110-0.124)</td>
+<td style="text-align: right;">0.117 (0.115-0.118)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">20</td>
 <td style="text-align: right;">0.411</td>
-<td style="text-align: right;">0.413 (0.407-0.421)</td>
+<td style="text-align: right;">0.412 (0.409-0.415)</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">23</td>
 <td style="text-align: right;">0.507</td>
-<td style="text-align: right;">0.508 (0.496-0.514)</td>
+<td style="text-align: right;">0.507 (0.504-0.509)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">30</td>
 <td style="text-align: right;">0.706</td>
-<td style="text-align: right;">0.706 (0.702-0.715)</td>
+<td style="text-align: right;">0.707 (0.705-0.709)</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">40</td>
 <td style="text-align: right;">0.891</td>
-<td style="text-align: right;">0.892 (0.889-0.894)</td>
+<td style="text-align: right;">0.892 (0.890-0.893)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">50</td>
 <td style="text-align: right;">0.970</td>
-<td style="text-align: right;">0.970 (0.968-0.974)</td>
+<td style="text-align: right;">0.970 (0.970-0.971)</td>
 </tr>
 </tbody>
 </table>
@@ -2159,16 +2161,22 @@ repeat_pa2 &lt;- function(n, m, simulations, repeats) {
 <pre class="r"><code>
 set.seed(42)
 
-summary(approx_pb &lt;- repeat_pa2(77, 6, 10000, 10))</code></pre>
+summary(approx_pb &lt;- repeat_pa2(77, 6, 1e5, 10))</code></pre>
 <pre><code>
     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-0.001700 0.001975 0.002300 0.002270 0.002625 0.002800 </code></pre>
+0.002000 0.002093 0.002210 0.002197 0.002267 0.002460 </code></pre>
 </div>
-<p>For that particular scenario and event, the probability is approximately 0.227%. The way we’ve coded it means we can quickly approximate the probability for any number of people <span class="math inline">\(n\)</span> and any number of days <span class="math inline">\(m\)</span>.</p>
+<p>For that particular scenario and event, the probability is approximately 0.220%. The way we’ve coded it means we can quickly approximate the probability for any number of people <span class="math inline">\(n\)</span> and any number of days <span class="math inline">\(m\)</span>.</p>
 <h1 id="exercises">Exercises</h1>
 <p>If you’re interested in practicing this skill, I encourage you to practice with the following:</p>
 <ol type="1">
 <li>Verify to yourself, through simulation, that in the <a href="https://en.wikipedia.org/wiki/Monty_Hall_problem" class="wiki-preview" data-wiki-lang="en" data-wiki-title="Monty Hall problem">Monty Hall problem</a>, contestants who switch doors have a <span class="math inline">\(\frac{2}{3}\)</span> chance of winning but contestants who stick to their initial choice have a <span class="math inline">\(\frac{1}{3}\)</span> chance of winning.</li>
+<li>Suppose two people are playing non-stop <a href="https://en.wikipedia.org/wiki/Rock%E2%80%93paper%E2%80%93scissors" class="wiki-preview" data-wiki-lang="en" data-wiki-title="Rock–paper–scissors">rock–paper–scissors</a> (also called roshambo). Player 1 (<strong>P1</strong>) always chooses one of the three shapes at random, but Player 2 (<strong>P2</strong>) always chooses between the two shapes they didn’t pick the previous round. Is one tactic better than the other – that is, which one has a higher probability of winning than the other one? (Or are they both about the same?)</li>
+<li>Suppose <strong>P1</strong> adjusts their strategy and always picks the shape that <strong>P2</strong> picked the previous round, while <strong>P2</strong> sticks to their original strategy. So, for example, if <strong>P2</strong> chose “paper” (a flat hand) in round 1, then <strong>P1</strong> will definitely pick “paper” in round 2, while <strong>P2</strong> will randomly pick between “scissors” and “rock”. Is this a better or worse strategy for <strong>P1</strong> than always randomly picking between the three shapes? How does the win probability of <strong>P1</strong>’s new strategy compare to the win probablity of <strong>P2</strong>’s strategy?</li>
+</ol>
+<h2 id="more-birthday-problem-exercises">More birthday problem exercises</h2>
+<ol type="1">
+<li>Try different numbers of simulations (e.g. 1K, 10K, 100K, 1M, 10M, 100M) with the first example. How does the number of simulations affect the variability of approximations you get – that is, how wide the range is? How many simulations do you need to consistently see the first three significant digits of the approximated results be the same as the first three significant digits of the result from the closed-form solution?</li>
 <li>At a meeting of a dozen (12) sets of twins (assuming each pair was born on the same day), what is the probability that two sets of twins (4 people total) share a birthday?</li>
 <li>Two baseball teams (each composed of 9 players) arrive at a field to play each other. What is probability that nobody on either team shares a birthday with one of their teammates and that exactly one player from team 1 shares a birthday with exactly one player from team 2?</li>
 </ol>
