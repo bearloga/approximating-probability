@@ -181,6 +181,13 @@ If you're interested in practicing this skill, I encourage you to practice with 
 
 This should go without saying but feel free to use whatever language you're most comfortable with (Python, Julia, etc.). Also maybe find a friend to try these exercises with you and then compare answers and approaches. (Perhaps you'll learn something new from each other!)
 
+# P.S. {.appendix}
+
+If you enjoyed this tutorial, you may be interested in my other tutorials:
+
+- [Bayesian optimization in R](https://bearloga.github.io/bayesopt-tutorial-r/): step-by-step demonstration of BayesOpt for derivative-free minimization of a noiseless, black-box function
+- [Solving a logic grid puzzle with integer programming](https://bearloga.github.io/logic-puzzle-ompr/): modeling a logic puzzle as a constraint satisfaction problem with {OMPR}
+
 # Acknowledgements {.appendix}
 
 You might have noticed a few blue links with "W"s on this page. Those are links to the Wikipedia articles on those topics and if you hover over them, you will see a preview of the article. This is possible with the [ContextCards library](https://chimeces.com/context-cards/) developed by my coworker Joaquin over at Wikimedia, based on the [Popups extension for MediaWiki](https://www.mediawiki.org/wiki/Extension:Popups).
