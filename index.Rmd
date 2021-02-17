@@ -5,7 +5,7 @@ description: |
 author:
   - name: Mikhail Popov
     url: https://mpopov.com
-date: "`r Sys.Date()`"
+date: 2019-08-10
 bibliography: bibliography.bib
 repository_url: https://github.com/bearloga/approximating-probability
 creative_commons: CC BY-SA
